@@ -7,13 +7,21 @@ import numpy
 from matplotlib import pyplot, cm
 import pylab
 from flask import Flask, jsonify, send_file, render_template, request, redirect
+from flask.ext.pymongo import PyMongo
+from pymongo import MongoClient
+import json
 app = Flask(__name__)
+
+client = MongoClient()
+client = MongoClient('mongodb://localhost:27017/')
+db = client['kidtest']
+collect = db['dicoms']
 
 @app.route('/')
 def index():
-    author = "DICOM Viewer"
-    name = "User"
-    return render_template('index.html', author=author, name=name)
+	author = "DICOM Viewer"
+	name = "User"
+	return render_template('index.html', author=author, name=name)
 
 @app.route('/data', methods=['GET', 'POST'])
 def data():
@@ -34,9 +42,16 @@ def data():
 	RESULTS_ARRAY.append({'tags':str(ds.dir())})
 	return jsonify(results = RESULTS_ARRAY)
 	
+@app.route('/mongo')
+def mongo():
+	cursor = collecr.find({"filename" : "IM-0013-1280"}) #mongo query
+	for d in cursor:
+		return jsonify(results = d)
+
+
 @app.route('/image')
 def image():
-    return send_file('IM-0001-0001.png', mimetype='image/gif')
+	return send_file('IM-0001-0001.png', mimetype='image/gif')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+	app.run(debug=True)
