@@ -7,11 +7,26 @@
 	<body>
 	<h2>Hello {{ name }}!</h2>
 	<form action="/data" method="post">
+	<h3 class="text-muted">Choose a File</h3>
 		<select name="filename">
 		<option value="IM-0001-0001">IM-0001-0001</option>
 		<option value="IM-0001-0002">IM-0001-0002</option>
 		</select>
 		<input type="submit" value="Submit"/>
 	</form>
+
+	<div class="container">
+    	<div class="header">
+        	<h3 class="text-muted">Or Upload a File</h3>
+      	</div>
+      	<hr/>
+      	<div>
+      
+      	<form action="upload" method="post" enctype="multipart/form-data">
+        	<input type="file" name="file"><br /><br />
+        	<input type="submit" value="Upload">
+      	</form>
+      	</div>
+    </div>
 	</body>
 </html>
