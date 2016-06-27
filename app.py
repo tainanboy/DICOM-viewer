@@ -7,9 +7,11 @@ import matplotlib
 matplotlib.use('Agg')
 from matplotlib import pyplot, cm
 import pylab
+import flask
 from flask import Flask, jsonify, send_file, render_template, request, redirect
 from flask_pymongo import PyMongo
 from pymongo import MongoClient
+from bson import json_util
 import json
 
 app = Flask(__name__)
@@ -44,16 +46,30 @@ def data():
 	RESULTS_ARRAY.append({'tags':str(ds.dir())})
 	return jsonify(results = RESULTS_ARRAY)
 	
+@app.route('/query', methods=['GET', 'POST'])
+def query():
+	if request.method == "POST":
+		if request.form['query'] == 'find({"0008,0030" : "113850"}).count()':
+			c = mongo2.db.dicoms.find({"0008,0030" : "113850"}).count()
+			return 'Count %d' %c
+		elif request.form['query'] =='find({"filename":"IM-0001-0002"})':
+			cursor = mongo2.db.dicoms.find({"filename":"IM-0001-0002"})
+			docs_list  = list(cursor)
+			return json.dumps(docs_list, default=json_util.default)
+
+
 @app.route('/mongo')
 def mongo():
-	c = []
-	c.append({'count': str(mongo2.db.dicoms.find({"0008,0030" : "113850"}).count())})  #mongo query
-	return jsonify(results = c)
+	c = mongo2.db.dicoms.find({"0008,0030" : "113850"}).count()  #mongo query
+	return 'Count %d' %c 
 
 
 @app.route('/image')
 def image():
 	return send_file('IM-0001-0001.png', mimetype='image/gif')
+
+#app.route('/upload', methods=['GET', 'POST'])
+# upload_file():
 
 if __name__ == '__main__':
 	app.run(host='0.0.0.0', debug=True)
