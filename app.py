@@ -2,20 +2,22 @@ import os
 import sys
 import dicom
 from os import walk
-from bs4 import BeautifulSoup
 import numpy
+import matplotlib
+matplotlib.use('Agg')
 from matplotlib import pyplot, cm
 import pylab
 from flask import Flask, jsonify, send_file, render_template, request, redirect
-from flask.ext.pymongo import PyMongo
+from flask_pymongo import PyMongo
 from pymongo import MongoClient
 import json
-app = Flask(__name__)
 
-client = MongoClient()
-client = MongoClient('mongodb://localhost:27017/')
-db = client['kidtest']
-collect = db['dicoms']
+app = Flask(__name__)
+app.config['MONGO_DBNAME'] = 'kidtest'
+#app.config['MONGO_HOST'] = 'localhost'
+#app.config['MONGO_PORT'] = 27017
+mongo2 = PyMongo(app, config_prefix='MONGO')
+
 
 @app.route('/')
 def index():
@@ -44,9 +46,9 @@ def data():
 	
 @app.route('/mongo')
 def mongo():
-	cursor = collecr.find({"filename" : "IM-0013-1280"}) #mongo query
-	for d in cursor:
-		return jsonify(results = d)
+	c = []
+	c.append({'count': str(mongo2.db.dicoms.find({"0008,0030" : "113850"}).count())})  #mongo query
+	return jsonify(results = c)
 
 
 @app.route('/image')
@@ -54,4 +56,4 @@ def image():
 	return send_file('IM-0001-0001.png', mimetype='image/gif')
 
 if __name__ == '__main__':
-	app.run(debug=True)
+	app.run(host='0.0.0.0', debug=True)
