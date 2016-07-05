@@ -1,30 +1,57 @@
 <!DOCTYPE html>
 <html>
-	<head>
+
+<head>
 	<title>{{ author }}</title>
-	</head>
-	<body>
+	<link rel="stylesheet" type="text/css" href="../static/semantic.min.css">
+	<script src="../static/semantic.min.js"></script>
+</head>
+
+<body>
+	<div class="ui menu">
+		<div class="active item">
+			Home
+		</div>
+	  <a class="item">Browse Image</a>
+	  <a class="item">Submit</a>
+	  <div class="right menu">
+	    <a class="item">Sign Up</a>
+	    <a class="item">Help</a>
+	  </div>
+	</div>
 	<h2>Hello {{ name }}!</h2>
 	<form action="/data" method="post">
-	<h3 class="text-muted">Choose a File</h3>
+		<h3 class="text-muted">Choose a File</h3>
 		<select name="filename">
-		<option value="IM-0001-0001">IM-0001-0001</option>
-		<option value="IM-0001-0002">IM-0001-0002</option>
+			<option value="IM-0001-0001">IM-0001-0001</option>
+			<option value="IM-0001-0002">IM-0001-0002</option>
 		</select>
-		<input type="submit" value="Submit"/>
+		<input type="submit" value="Submit" />
+	</form>
+
+	<form action="/query" method="post">
+		<h3 class="text-muted">Or Append a query</h3>
+		<select name="query">
+			<option value='find({"0008,0030" : "113850"}).count()'>find({"0008,0030" : "113850"}).count()</option>
+			<option value='find({"filename":"IM-0001-0002"})'>find({"filename":"IM-0001-0002"})</option>
+		</select>
+		<input type="submit" value="query!" />
 	</form>
 
 	<div class="container">
-    	<div class="header">
-        	<h3 class="text-muted">Or Upload a File</h3>
-      	</div>
-      	<hr/>
-      	<div>
-      	<form action="upload" method="post" enctype="multipart/form-data">
-        	<input type="file" name="file"><br /><br />
-        	<input type="submit" value="Upload">
-      	</form>
-      	</div>
-    </div>
-	</body>
+		<div class="header">
+			<h3 class="text-muted">Or Upload a File</h3>
+		</div>
+		<hr/>
+		<div>
+			<form action="/upload" method="post" enctype="multipart/form-data">
+				<input type="file" name="file">
+				<br />
+				<br />
+				<input type="submit" value="Upload">
+			</form>
+		</div>
+	</div>
+</body>
+
 </html>
