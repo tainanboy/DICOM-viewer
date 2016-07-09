@@ -1,34 +1,54 @@
 <!DOCTYPE html>
 <html>
-
 <head>
 	<title>{{ author }}</title>
 	<link rel="stylesheet" type="text/css" href="../static/semantic.min.css">
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
 	<script src="../static/semantic.min.js"></script>
-	<script src="../static/main.js"></script>
+	<script type="text/javascript" src="../static/main.js"></script>
 </head>
 <body>
 	<div class="ui inverted menu">
+		<div class="header item">
+    		Medical viewer
+  		</div>
 		<div class="active item">
 			Home
 		</div>
-	  <a class="item">Browse Image</a>
-	  <a class="item">Submit</a>
+	  <a class="item">Information</a>
+	  <a class="item">Analysis</a>
+	  <div class="ui inverted menu">
+		<div class="ui dropdown item">
+			Getting Started
+			<i class="dropdown icon"></i>
+			<div class="menu">
+			<a class="item">MRI image</a>
+			<a class="item">Genome</a>
+			</div>
+		</div>
+	  </div>
 	  <div class="right menu">
 	    <a class="item">Sign Up</a>
 	    <a class="item">Help</a>
 	  </div>
 	</div>
 	<h2>Hello {{ name }}!</h2>
-	<form action="/data" method="post">
-		<h3 class="text-muted">Choose a File</h3>
-		<select name="filename" class="ui search dropdown" id='select'>
-			<option value="">Filename</option>
-			<option value="IM-0001-0001">IM-0001-0001</option>
-			<option value="IM-0001-0002">IM-0001-0002</option>
-		</select>
-		<button class="mini ui button" type="submit" value = "Submit">Submit</button>
-	</form>
+	
+	<div class='ui grid'>
+		<div class='sixteen wide column'>
+			<form class="ui form" action="/data" method="POST">
+				<h3 class="text-muted">Choose a File</h3>
+				<select name="filename" class="ui search dropdown" class='dropdown'>
+					<option value="">Filename</option>
+					{% for i in filelist%}
+					<option value={{i}}>{{i}}</option>
+					{% endfor%}
+				</select>
+				<input class="right attached small ui button" type="submit" value="Show DICOM information"></input>
+			</form>
+		</div>	
+	</div>
+
 	<form action="/query" method="post">
 		<h3 class="text-muted">Or Append a query</h3>
 		<select name="query">
@@ -50,6 +70,25 @@
 				<input type="submit" value="Upload">
 			</form>
 		</div>
-	</div>
+	 </div>
+	 <div class='ui grid'>
+		 <div class='sixteen wide column'>
+			<form class="ui form">
+				<h3 class="text-muted">Search with xyz coordination</h3>
+				<div class="inline fields">
+					<div class="one wide field">
+					<input type="text" placeholder="x">
+					</div>
+					<div class="one wide field">
+					<input type="text" placeholder="y">
+					</div>
+					<div class="one wide field">
+					<input type="text" placeholder="z">
+					</div>
+					<input class="small ui button" type="submit" value="Search"></input>
+				</div>
+			</form>
+		 </div>
+	 </div>
 </body>
 </html>

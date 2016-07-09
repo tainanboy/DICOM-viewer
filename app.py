@@ -21,31 +21,43 @@ app.config['MONGO_DBNAME'] = 'kidtest'
 mongo2 = PyMongo(app, config_prefix='MONGO')
 
 
-@app.route('/')
+@app.route('/index')
 def index():
-	author = "DICOM Viewer"
-	name = "User"
-	return render_template('index.html', author=author, name=name)
-
-@app.route('/data', methods=['GET', 'POST'])
-def data():
 	l = []
-	RESULTS_ARRAY = []
-	select = request.form.get('filename')
-	RESULTS_ARRAY.append({'File':str(select)})
+	filelist = []
 	for (dirpath, dirnames, filenames) in walk("/Users/frank/research/dicom/"):
 		for f in filenames:
 			filepath = os.path.join(dirpath, f)
 			if filepath.endswith('.dcm'):
-				l.append(filepath)
-	file = l[1]
-	filename = os.path.basename(file).split(".")[0]
-	#print(filename)
-	ds = dicom.read_file(file)
-	RESULTS_ARRAY.append({'Name':str(ds.PatientName)})
-	RESULTS_ARRAY.append({'tags':str(ds.dir())})
-	return jsonify(results = RESULTS_ARRAY)
-	
+				l.append(filepath)	
+	for item in l:
+		filelist.append(os.path.basename(item).split(".")[0])
+	author = "Medical Viewer"
+	name = "User"
+	return render_template('index.html', **locals())
+
+@app.route('/data', methods=['GET', 'POST'])
+def data():
+	l = {}
+	result_dict = {}
+	select = request.form.get('filename')
+	for (dirpath, dirnames, filenames) in walk("/Users/frank/research/dicom/"):
+		for f in filenames:
+			filepath = os.path.join(dirpath, f)
+			if filepath.endswith('.dcm'):
+				l[f] = filepath
+	s = str(select) + '.dcm'
+	path = l.get(s)
+	ds = dicom.read_file(path)
+	imagename = str('image/'+ str(select) + '.png')
+	result_dict['Filename'] = str(select)
+	result_dict['PatientName'] = str(ds.PatientName)
+	result_dict['Date'] = str(ds.StudyDate)
+	result_dict['all tags'] = str(ds.dir())
+	#RESULTS_ARRAY.append({'tags':str(ds.dir())})
+	#return jsonify(RESULTS_ARRAY)
+	return render_template('data.html', **locals())
+
 @app.route('/query', methods=['GET', 'POST'])
 def query():
 	if request.method == "POST":

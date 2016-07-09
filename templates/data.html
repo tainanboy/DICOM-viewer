@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>{{ author }}</title>
+	<link rel="stylesheet" type="text/css" href="../static/semantic.min.css">
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+	<script src="../static/semantic.min.js"></script>
+	<script type="text/javascript" src="../static/main.js"></script>
+</head>
+<body>
+	<div class="ui inverted menu">
+		<div class="header item">
+    		Medical viewer
+  		</div>
+		<a class="item" href="./index">Home</a>
+	  <div class="active item">Information</div>
+	  <a class="item">Analysis</a>
+	  <div class="ui inverted menu">
+		<div class="ui dropdown item">
+			Getting Started
+			<i class="dropdown icon"></i>
+			<div class="menu">
+			<a class="item">MRI image</a>
+			<a class="item">Genome</a>
+			</div>
+		</div>
+	  </div>
+	  <div class="right menu">
+	    <a class="item">Sign Up</a>
+	    <a class="item">Help</a>
+	  </div>
+	</div>
+    <div class='ui grid'>
+        <div class='ten wide column'> 
+            <table class="ui very compact table">
+                <thead>
+                    <tr><th>Tag</th>
+                    <th>Value</th>
+                </tr></thead>
+                <tbody>
+                    {%for k, v in result_dict.items()%}
+                    <tr>
+                    <td>{{k}}</td>
+                    <td>{{v}}</td>
+                    </tr>
+                    {% endfor%}
+                </tbody>
+            </table>
+        </div>
+        <div class="six wide column">
+            <img class="ui image" src = {{ url_for('static', filename = imagename ) }}>
+        </div>
+        <div class="centered row">
+            <div class="ui bottom attached buttons">
+                <button class="ui labeled icon button">
+                    <i class="left arrow icon"></i>
+                    Previous
+                </button>
+                <button class="ui right labeled icon button">
+                    <i class="right arrow icon"></i>
+                    Next
+                </button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
