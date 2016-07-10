@@ -13,6 +13,7 @@ from flask_pymongo import PyMongo
 from pymongo import MongoClient
 from bson import json_util
 import json
+from string import Template
 
 app = Flask(__name__)
 app.config['MONGO_DBNAME'] = 'kidtest'
@@ -50,7 +51,7 @@ def data():
 	path = l.get(s)
 	ds = dicom.read_file(path)
 	imagename = str('image/'+ str(select) + '.png')
-	result_dict['Filename'] = str(select)
+	result_dict['filename'] = str(select)
 	result_dict['PatientName'] = str(ds.PatientName)
 	result_dict['Date'] = str(ds.StudyDate)
 	result_dict['all tags'] = str(ds.dir())
@@ -58,17 +59,41 @@ def data():
 	#return jsonify(RESULTS_ARRAY)
 	return render_template('data.html', **locals())
 
+@app.route('/xyz', methods=['GET', 'POST'])
+def xyz():
+	if request.method == "POST":
+		result_dict = {}
+		X = request.form.get('x')
+		Y = request.form.get('y')
+		Z = request.form.get('z')
+		q = Template('$x\$y\$z')
+		q = str(q.substitute(x=X, y=Y, z=Z))
+		cursor = mongo2.db.dicoms.find({"0020,0032" : q})
+		docs_list  = list(cursor)
+		select = docs_list[0]["filename"]
+		imagename = str('image/'+ str(select) + '.png')
+		result_dict['filename'] = select
+		result_dict['PatientName'] = docs_list[0]["0010,0010"]
+		result_dict['Date'] = docs_list[0]["0008,0020"]
+		alltags=[]
+		for k,v in docs_list[0].items():
+			alltags.append(k)
+		result_dict['all tags'] = str(alltags)
+		#return q
+		#return json.dumps(docs_list, default=json_util.default)
+		return render_template('data.html', **locals())
+		#return 'Count %d' %cursor
+
+
 @app.route('/query', methods=['GET', 'POST'])
 def query():
-	if request.method == "POST":
-		if request.form['query'] == 'find({"0008,0030" : "113850"}).count()':
-			c = mongo2.db.dicoms.find({"0008,0030" : "113850"}).count()
-			return 'Count %d' %c
-		elif request.form['query'] =='find({"filename":"IM-0001-0002"})':
-			cursor = mongo2.db.dicoms.find({"filename":"IM-0001-0002"})
-			docs_list  = list(cursor)
-			return json.dumps(docs_list, default=json_util.default)
-
+	if request.form.get('Query') == 'find({"0008,0030" : "113850"}).count()':
+		c = mongo2.db.dicoms.find({"0008,0030" : "113850"}).count()
+		return 'Count %d' %c
+	elif request.form.get('Query') =='find({"filename":"IM-0001-0002"})':
+		cursor = mongo2.db.dicoms.find({"filename":"IM-0001-0002"})
+		docs_list  = list(cursor)
+		return json.dumps(docs_list, default=json_util.default)
 
 @app.route('/mongo')
 def mongo():

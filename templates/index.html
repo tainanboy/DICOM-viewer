@@ -49,14 +49,20 @@
 		</div>	
 	</div>
 
-	<form action="/query" method="post">
-		<h3 class="text-muted">Or Append a query</h3>
-		<select name="query">
-			<option value='find({"0008,0030" : "113850"}).count()'>find({"0008,0030" : "113850"}).count()</option>
-			<option value='find({"filename":"IM-0001-0002"})'>find({"filename":"IM-0001-0002"})</option>
-		</select>
-		<input type="submit" value="query!" />
-	</form>
+	<div class='ui grid'>
+		<div class='sixteen wide column'>
+			<form class="ui form" action="/query" method="POST">
+				<h3 class="text-muted">Or Append a query</h3>
+				<select name="Query" class="find">
+					<option value="">Operation</option>
+					<option value='find({"0008,0030" : "113850"}).count()'>find({"0008,0030" : "113850"}).count()</option>
+					<option value='find({"filename":"IM-0001-0002"})'>find({"filename":"IM-0001-0002"})</option>
+				</select>
+				<input class="right attached small ui button" type="submit" value="Query!" />
+			</form>
+		</div>
+	</div>
+	<!--
 	<div class="container">
 		<div class="header">
 			<h3 class="text-muted">Or Upload a File</h3>
@@ -71,19 +77,20 @@
 			</form>
 		</div>
 	 </div>
+	 -->
 	 <div class='ui grid'>
 		 <div class='sixteen wide column'>
-			<form class="ui form">
-				<h3 class="text-muted">Search with xyz coordination</h3>
+			<form class="ui form" action="/xyz" method="POST">
+				<h3 class="text-muted">Or search with xyz coordination</h3>
 				<div class="inline fields">
-					<div class="one wide field">
-					<input type="text" placeholder="x">
+					<div class="three wide field">
+					<input type="text" placeholder="x" name="x">
 					</div>
-					<div class="one wide field">
-					<input type="text" placeholder="y">
+					<div class="three wide field">
+					<input type="text" placeholder="y" name="y">
 					</div>
-					<div class="one wide field">
-					<input type="text" placeholder="z">
+					<div class="three wide field">
+					<input type="text" placeholder="z" name="z">
 					</div>
 					<input class="small ui button" type="submit" value="Search"></input>
 				</div>
