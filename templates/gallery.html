@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>{{ author }}</title>
+	<link rel="stylesheet" type="text/css" href="../static/semantic.min.css">
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+	<script src="../static/semantic.min.js"></script>
+	<script type="text/javascript" src="../static/main.js"></script>
+</head>
+<body>
+	<div class="ui inverted menu">
+		<div class="header item">
+    		Medical viewer
+  		</div>
+	    <a class="item" href="./index">
+			Home
+		</a>
+	  <a class="item">Information</a>
+	  <a class="active item">Gallery</a>
+      <a class="item">Analysis</a>
+	  <div class="right menu">
+		<div class="item">
+			<div class="ui icon input">
+				<input type="text" placeholder="Filename">
+				<i class="search link icon"></i>
+			</div>
+		</div>
+	    <a class="item">Sign Up</a>
+		<div class="ui dropdown item">
+			Help
+			<i class="dropdown icon"></i>
+			<div class="menu">
+			<a class="item">MRI image</a>
+			<a class="item">Genome</a>
+			</div>
+		</div>
+	  </div>
+	</div>
+    <div class="ui four special cards">
+        {% for k,v in od.items()%}
+        <div class="card">
+                <div class="blurring dimmable image">
+                <div class="ui inverted dimmer">
+                    <div class="content">
+                    <div class="center">
+                        <div class="ui primary button">Show more</div>
+                    </div>
+                    </div>
+                </div>
+                <img src = {{ url_for('static', filename = v[0] ) }}>
+            </div>
+            <div class="content">
+                <a class="sub header">{{k}}</a>
+                <a class="meta">
+                    <span class="date">{{v[1]}}</span>
+                </a>
+            </div>
+        </div>
+        {% endfor%}
+    </div>
+    
+</body>
+</html>

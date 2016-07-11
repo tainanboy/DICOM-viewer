@@ -2,7 +2,10 @@ $(document).ready(function(){
     $('.dropdown')
         .dropdown()
     ;
-    $('.find')
+    $('#find')
         .dropdown()
     ;
+    $('.special.cards .image').dimmer({
+        on: 'hover'
+    });
 });

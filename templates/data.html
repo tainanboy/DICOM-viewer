@@ -12,12 +12,22 @@
 		<div class="header item">
     		Medical viewer
   		</div>
-		<a class="item" href="./index">Home</a>
-	  <div class="active item">Information</div>
+		<a class="item" href="./index">
+			Home
+		</a>
+	  <a class="active item">Information</a>
+	  <a class="item" href="./gallery">Gallery</a>
 	  <a class="item">Analysis</a>
-	  <div class="ui inverted menu">
+	  <div class="right menu">
+		<div class="item">
+			<div class="ui icon input">
+				<input type="text" placeholder="Filename">
+				<i class="search link icon"></i>
+			</div>
+		</div>
+	    <a class="item">Sign Up</a>
 		<div class="ui dropdown item">
-			Getting Started
+			Help
 			<i class="dropdown icon"></i>
 			<div class="menu">
 			<a class="item">MRI image</a>
@@ -25,11 +35,8 @@
 			</div>
 		</div>
 	  </div>
-	  <div class="right menu">
-	    <a class="item">Sign Up</a>
-	    <a class="item">Help</a>
-	  </div>
 	</div>
+
     <div class='ui grid'>
         <div class='ten wide column'> 
             <table class="ui very compact table">
@@ -51,16 +58,25 @@
             <img class="ui image" src = {{ url_for('static', filename = imagename ) }}>
         </div>
         <div class="centered row">
-            <div class="ui bottom attached buttons">
+            <div class="compact ui bottom attached buttons">
                 <button class="ui labeled icon button">
-                    <i class="left arrow icon"></i>
+                    <i class="left chevron icon"></i>
                     Previous
                 </button>
-                <button class="ui right labeled icon button">
-                    <i class="right arrow icon"></i>
+                <button class="compact ui right labeled icon button">
+                    <i class="right chevron icon"></i>
                     Next
                 </button>
             </div>
+            <!--
+            <div class="ui search">
+                <div class="ui icon input">
+                    <input class="prompt" type="text" placeholder="Common passwords...">
+                    <i class="search icon"></i>
+                </div>
+                <div class="results"></div>
+            </div>
+            -->
         </div>
     </div>
 </body>

@@ -14,6 +14,7 @@ from pymongo import MongoClient
 from bson import json_util
 import json
 from string import Template
+import collections
 
 app = Flask(__name__)
 app.config['MONGO_DBNAME'] = 'kidtest'
@@ -54,6 +55,7 @@ def data():
 	result_dict['filename'] = str(select)
 	result_dict['PatientName'] = str(ds.PatientName)
 	result_dict['Date'] = str(ds.StudyDate)
+	result_dict['ImagePositionPatient'] = str(ds.ImagePositionPatient)
 	result_dict['all tags'] = str(ds.dir())
 	#RESULTS_ARRAY.append({'tags':str(ds.dir())})
 	#return jsonify(RESULTS_ARRAY)
@@ -75,6 +77,7 @@ def xyz():
 		result_dict['filename'] = select
 		result_dict['PatientName'] = docs_list[0]["0010,0010"]
 		result_dict['Date'] = docs_list[0]["0008,0020"]
+		result_dict['ImagePositionPatient'] = docs_list[0]["0020,0032"]
 		alltags=[]
 		for k,v in docs_list[0].items():
 			alltags.append(k)
@@ -83,6 +86,25 @@ def xyz():
 		#return json.dumps(docs_list, default=json_util.default)
 		return render_template('data.html', **locals())
 		#return 'Count %d' %cursor
+
+@app.route('/gallery', methods=['GET', 'POST'])
+def gallery():
+	result_dict = {}
+	d = {}
+	for (dirpath, dirnames, filenames) in walk("/Users/frank/research/dicom/"):
+		for f in filenames:
+			if f.endswith('.dcm'):
+				filepath = os.path.join(dirpath, f)
+				ds = dicom.read_file(filepath)
+				fn = str(os.path.basename(f).split(".")[0])
+				imagename = 'image/'+ fn + '.png'
+				d[fn] = (imagename, str(ds.ImagePositionPatient))
+	od = collections.OrderedDict(sorted(d.items()))
+	#s = item + '.dcm'
+	#imagename = str('image/'+ item + '.png')
+	#path = d.get(s)
+	#ds = dicom.read_file(path)
+	return render_template('gallery.html', **locals())
 
 
 @app.route('/query', methods=['GET', 'POST'])
@@ -100,13 +122,9 @@ def mongo():
 	c = mongo2.db.dicoms.find({"0008,0030" : "113850"}).count()  #mongo query
 	return 'Count %d' %c 
 
-
 @app.route('/image')
 def image():
 	return send_file('IM-0001-0001.png', mimetype='image/gif')
-
-#app.route('/upload', methods=['GET', 'POST'])
-# upload_file():
 
 if __name__ == '__main__':
 	app.run(host='0.0.0.0', debug=True)
