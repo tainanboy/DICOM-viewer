@@ -36,8 +36,8 @@
 		</div>
 	  </div>
 	</div>
-    <div class="ui four special cards">
-        {% for k,v in od.items()%}
+    <div class="ui five special cards">
+        {% for k in od_list%}
         <div class="card">
                 <div class="blurring dimmable image">
                 <div class="ui inverted dimmer">
@@ -47,12 +47,12 @@
                     </div>
                     </div>
                 </div>
-                <img src = {{ url_for('static', filename = v[0] ) }}>
+                <img src = {{ url_for('static', filename = k[1][0] ) }}>
             </div>
             <div class="content">
-                <a class="sub header">{{k}}</a>
+                <a class="sub header">{{k[0]}}</a>
                 <a class="meta">
-                    <span class="date">{{v[1]}}</span>
+                    <span class="date">{{k[1][1]}}</span>
                 </a>
             </div>
         </div>

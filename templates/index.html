@@ -17,7 +17,7 @@
 		</a>
 	  <a class="item">Information</a>
 	  <a class="item" href="./gallery">Gallery</a>
-	  <a class="item">Analysis</a>
+	  <a class="item" href="./query">Analysis</a>
 	  <div class="right menu">
 		<div class="item">
 			<div class="ui icon input">
@@ -41,7 +41,7 @@
 	
 	<div class='ui grid'>
 		<div class='sixteen wide column'>
-			<form class="ui form" action="/data" method="POST">
+			<form class="ui form" class="ui action input" action="/data" method="POST">
 				<h3 class="text-muted">Choose a File</h3>
 				<select name="filename" class="ui search dropdown" class='dropdown'>
 					<option value="">Filename</option>
@@ -54,19 +54,6 @@
 		</div>	
 	</div>
 
-	<div class='ui grid'>
-		<div class='sixteen wide column'>
-			<form class="ui form" action="/query" method="POST">
-				<h3 class="text-muted">Or Append a query</h3>
-				<select name="Query" id="find">
-					<option value="">Operation</option>
-					<option value='find({"0008,0030" : "113850"}).count()'>find({"0008,0030" : "113850"}).count()</option>
-					<option value='find({"filename":"IM-0001-0002"})'>find({"filename":"IM-0001-0002"})</option>
-				</select>
-				<input class="right attached small ui button" type="submit" value="Query!" />
-			</form>
-		</div>
-	</div>
 	<!--
 	<div class="container">
 		<div class="header">
@@ -88,13 +75,13 @@
 			<form class="ui form" action="/xyz" method="POST">
 				<h3 class="text-muted">Or search with xyz coordination</h3>
 				<div class="inline fields">
-					<div class="three wide field">
+					<div class="two wide field">
 					<input type="text" placeholder="x" name="x">
 					</div>
-					<div class="three wide field">
+					<div class="two wide field">
 					<input type="text" placeholder="y" name="y">
 					</div>
-					<div class="three wide field">
+					<div class="two wide field">
 					<input type="text" placeholder="z" name="z">
 					</div>
 					<input class="small ui button" type="submit" value="Search"></input>

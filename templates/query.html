@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>{{ author }}</title>
+	<link rel="stylesheet" type="text/css" href="../static/semantic.min.css">
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+	<script src="../static/semantic.min.js"></script>
+	<script type="text/javascript" src="../static/main.js"></script>
+</head>
+<body>
+	<div class="ui inverted menu">
+		<div class="header item">
+    		Medical viewer
+  		</div>
+	    <a class="item" href="./index">
+			Home
+		</a>
+	  <a class="item">Information</a>
+	  <a class="item" href="./gallery">Gallery</a>
+      <a class="active item">Analysis</a>
+	  <div class="right menu">
+		<div class="item">
+			<div class="ui icon input">
+				<input type="text" placeholder="Filename">
+				<i class="search link icon"></i>
+			</div>
+		</div>
+	    <a class="item">Sign Up</a>
+		<div class="ui dropdown item">
+			Help
+			<i class="dropdown icon"></i>
+			<div class="menu">
+			<a class="item">MRI image</a>
+			<a class="item">Genome</a>
+			</div>
+		</div>
+	  </div>
+	</div>
+    <div class='ui grid'>
+		<div class='sixteen wide column'>
+			<form class="ui form" class="ui action input" action="/query" method="POST">
+				<h3 class="text-muted">Append a query</h3>
+				<select name="Query" class="ui dropdown">
+					<option value="">Operations</option>
+					<option value="0">find({"0008,0030" : "113850"}).count()</option>
+					<option value="1">find({"filename":"IM-0001-0002"})</option>
+				</select>
+				<input class="right attached small ui button" type="submit" value="Query"/>
+			</form>
+		</div>
+        <div class='sixteen wide column'> 
+            <table class="ui very compact table">
+                <thead>
+                    <tr><th>Result</th>
+                </tr></thead>
+                <tbody>
+                    {%for k in docs_list%}
+                    <tr>
+                    <td>{{k}}</td>
+                    </tr>
+                    {% endfor%}
+                </tbody>
+            </table>
+        </div>
+	</div>
+</body>
+</html>

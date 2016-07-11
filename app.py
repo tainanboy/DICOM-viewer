@@ -14,6 +14,7 @@ from pymongo import MongoClient
 from bson import json_util
 import json
 from string import Template
+import itertools
 import collections
 
 app = Flask(__name__)
@@ -89,17 +90,24 @@ def xyz():
 
 @app.route('/gallery', methods=['GET', 'POST'])
 def gallery():
-	result_dict = {}
 	d = {}
+	b = 0
+	e = 30
 	for (dirpath, dirnames, filenames) in walk("/Users/frank/research/dicom/"):
 		for f in filenames:
 			if f.endswith('.dcm'):
 				filepath = os.path.join(dirpath, f)
 				ds = dicom.read_file(filepath)
-				fn = str(os.path.basename(f).split(".")[0])
-				imagename = 'image/'+ fn + '.png'
-				d[fn] = (imagename, str(ds.ImagePositionPatient))
+				if("ImagePositionPatient" in ds):
+					fn = str(os.path.basename(f).split(".")[0])
+					imagename = 'image/'+ fn + '.png'
+					d[fn] = (imagename, str(ds.ImagePositionPatient))
+				else:
+					fn = str(os.path.basename(f).split(".")[0])
+					imagename = 'image/'+ fn + '.png'
+					d[fn] = (imagename, '')					
 	od = collections.OrderedDict(sorted(d.items()))
+	od_list = list(od.items())[b:e]
 	#s = item + '.dcm'
 	#imagename = str('image/'+ item + '.png')
 	#path = d.get(s)
@@ -109,14 +117,21 @@ def gallery():
 
 @app.route('/query', methods=['GET', 'POST'])
 def query():
-	if request.form.get('Query') == 'find({"0008,0030" : "113850"}).count()':
+	docs_list = []
+	#return str(request.form.get('Query'))
+	if str(request.form.get('Query')) == '0':
 		c = mongo2.db.dicoms.find({"0008,0030" : "113850"}).count()
-		return 'Count %d' %c
-	elif request.form.get('Query') =='find({"filename":"IM-0001-0002"})':
+		#return 'Count %d' %c
+		docs_list.append(c)
+		return render_template('query.html', **locals())
+	elif str(request.form.get('Query')) == '1':
 		cursor = mongo2.db.dicoms.find({"filename":"IM-0001-0002"})
 		docs_list  = list(cursor)
-		return json.dumps(docs_list, default=json_util.default)
-
+		#return json.dumps(docs_list, default=json_util.default)
+		return render_template('query.html', **locals())
+	else:
+		return render_template('query.html', **locals())
+'''
 @app.route('/mongo')
 def mongo():
 	c = mongo2.db.dicoms.find({"0008,0030" : "113850"}).count()  #mongo query
@@ -125,6 +140,6 @@ def mongo():
 @app.route('/image')
 def image():
 	return send_file('IM-0001-0001.png', mimetype='image/gif')
-
+'''
 if __name__ == '__main__':
 	app.run(host='0.0.0.0', debug=True)
