@@ -20,10 +20,10 @@
 	  <a class="item" href="./query">Analysis</a>
 	  <div class="right menu">
 		<div class="item">
-			<div class="ui icon input">
-				<input type="text" placeholder="Filename">
-				<i class="search link icon"></i>
-			</div>
+			<form class="ui icon input" action="/data" method="POST">
+				<input type="text" placeholder="Filename" name="menu_search">
+				<i class="search link icon" type="submit"></i>
+			</form>
 		</div>
 	    <a class="item">Sign Up</a>
 		<div class="ui dropdown item">

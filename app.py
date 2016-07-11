@@ -43,7 +43,12 @@ def index():
 def data():
 	l = {}
 	result_dict = {}
-	select = request.form.get('filename')
+	if(request.form.get('filename')):
+		select = request.form.get('filename')
+	elif (request.form['menu_search']):
+		select = request.form.get('menu_search')
+	elif (request.form['more']):
+		select = request.form.get('more')
 	for (dirpath, dirnames, filenames) in walk("/Users/frank/research/dicom/"):
 		for f in filenames:
 			filepath = os.path.join(dirpath, f)
@@ -61,6 +66,7 @@ def data():
 	#RESULTS_ARRAY.append({'tags':str(ds.dir())})
 	#return jsonify(RESULTS_ARRAY)
 	return render_template('data.html', **locals())
+
 
 @app.route('/xyz', methods=['GET', 'POST'])
 def xyz():

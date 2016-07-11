@@ -17,13 +17,13 @@
 		</a>
 	  <a class="item">Information</a>
 	  <a class="active item">Gallery</a>
-      <a class="item">Analysis</a>
+      <a class="item" href="./query">Analysis</a>
 	  <div class="right menu">
 		<div class="item">
-			<div class="ui icon input">
-				<input type="text" placeholder="Filename">
-				<i class="search link icon"></i>
-			</div>
+			<form class="ui icon input" action="/data" method="POST">
+				<input type="text" placeholder="Filename" name="menu_search">
+				<i class="search link icon" type="submit"></i>
+			</form>
 		</div>
 	    <a class="item">Sign Up</a>
 		<div class="ui dropdown item">
@@ -39,7 +39,7 @@
     <div class="ui five special cards">
         {% for k in od_list%}
         <div class="card">
-                <div class="blurring dimmable image">
+            <div class="blurring dimmable image">
                 <div class="ui inverted dimmer">
                     <div class="content">
                     <div class="center">
