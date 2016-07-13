@@ -43,7 +43,10 @@
                 <div class="ui inverted dimmer">
                     <div class="content">
                     <div class="center">
-                        <div class="ui primary button">Show more</div>
+						<form action="/data" method="GET">
+                        	<input class="ui primary button" type="submit" value="Show more">
+							<input type="hidden" value={{k[0]}} name="more">
+						</form>
                     </div>
                     </div>
                 </div>

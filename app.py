@@ -43,12 +43,14 @@ def index():
 def data():
 	l = {}
 	result_dict = {}
-	if(request.form.get('filename')):
-		select = request.form.get('filename')
-	elif (request.form['menu_search']):
-		select = request.form.get('menu_search')
-	elif (request.form['more']):
-		select = request.form.get('more')
+	if request.method == "POST":
+		if(request.form.get('filename')):
+			select = request.form.get('filename')
+		elif (request.form['menu_search']):
+			select = request.form.get('menu_search')
+	elif request.method == "GET":
+		if (request.args.get('more')):
+			select = request.args.get('more')
 	for (dirpath, dirnames, filenames) in walk("/Users/frank/research/dicom/"):
 		for f in filenames:
 			filepath = os.path.join(dirpath, f)

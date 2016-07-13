@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 	<title>{{ author }}</title>
 	<link rel="stylesheet" type="text/css" href="../static/semantic.min.css">
@@ -7,38 +8,39 @@
 	<script src="../static/semantic.min.js"></script>
 	<script type="text/javascript" src="../static/main.js"></script>
 </head>
+
 <body>
 	<div class="ui inverted menu">
 		<div class="header item">
-    		Medical viewer
-  		</div>
+			Medical viewer
+		</div>
 		<a class="active item">
 			Home
 		</a>
-	  <a class="item">Information</a>
-	  <a class="item" href="./gallery">Gallery</a>
-	  <a class="item" href="./query">Analysis</a>
-	  <div class="right menu">
-		<div class="item">
-			<form class="ui icon input" action="/data" method="POST">
-				<input type="text" placeholder="Filename" name="menu_search">
-				<i class="search link icon" type="submit"></i>
-			</form>
-		</div>
-	    <a class="item">Sign Up</a>
-		<div class="ui dropdown item">
-			Help
-			<i class="dropdown icon"></i>
-			<div class="menu">
-			<a class="item">MRI image</a>
-			<a class="item">Genome</a>
+		<a class="item">Information</a>
+		<a class="item" href="./gallery">Gallery</a>
+		<a class="item" href="./query">Analysis</a>
+		<div class="right menu">
+			<div class="item">
+				<form class="ui icon input" action="/data" method="POST">
+					<input type="text" placeholder="Filename" name="menu_search">
+					<i class="search link icon" type="submit"></i>
+				</form>
+			</div>
+			<a class="item">Sign Up</a>
+			<div class="ui dropdown item">
+				Help
+				<i class="dropdown icon"></i>
+				<div class="menu">
+					<a class="item">MRI image</a>
+					<a class="item">Genome</a>
+				</div>
 			</div>
 		</div>
-	  </div>
 	</div>
 
 	<h2>Hello {{ name }}!</h2>
-	
+
 	<div class='ui grid'>
 		<div class='sixteen wide column'>
 			<form class="ui form" class="ui action input" action="/data" method="POST">
@@ -51,7 +53,7 @@
 				</select>
 				<input class="right attached small ui button" type="submit" value="Show DICOM information"></input>
 			</form>
-		</div>	
+		</div>
 	</div>
 
 	<!--
@@ -70,24 +72,25 @@
 		</div>
 	 </div>
 	 -->
-	 <div class='ui grid'>
-		 <div class='sixteen wide column'>
+	<div class='ui grid'>
+		<div class='sixteen wide column'>
 			<form class="ui form" action="/xyz" method="POST">
 				<h3 class="text-muted">Or search with xyz coordination</h3>
 				<div class="inline fields">
 					<div class="two wide field">
-					<input type="text" placeholder="x" name="x">
+						<input type="text" placeholder="x" name="x">
 					</div>
 					<div class="two wide field">
-					<input type="text" placeholder="y" name="y">
+						<input type="text" placeholder="y" name="y">
 					</div>
 					<div class="two wide field">
-					<input type="text" placeholder="z" name="z">
+						<input type="text" placeholder="z" name="z">
 					</div>
 					<input class="small ui button" type="submit" value="Search"></input>
 				</div>
 			</form>
-		 </div>
-	 </div>
+		</div>
+	</div>
 </body>
+
 </html>

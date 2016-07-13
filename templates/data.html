@@ -1,54 +1,58 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-	<title>{{ author }}</title>
-	<link rel="stylesheet" type="text/css" href="../static/semantic.min.css">
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
-	<script src="../static/semantic.min.js"></script>
-	<script type="text/javascript" src="../static/main.js"></script>
+    <title>{{ author }}</title>
+    <link rel="stylesheet" type="text/css" href="../static/semantic.min.css">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+    <script src="../static/semantic.min.js"></script>
+    <script type="text/javascript" src="../static/main.js"></script>
 </head>
+
 <body>
-	<div class="ui inverted menu">
-		<div class="header item">
-    		Medical viewer
-  		</div>
-		<a class="item" href="./index">
+    <div class="ui inverted menu">
+        <div class="header item">
+            Medical viewer
+        </div>
+        <a class="item" href="./index">
 			Home
 		</a>
-	  <a class="active item">Information</a>
-	  <a class="item" href="./gallery">Gallery</a>
-	  <a class="item" href="./query">Analysis</a>
-	  <div class="right menu">
-		<div class="item">
-			<form class="ui icon input" action="/data" method="POST">
-				<input type="text" placeholder="Filename" name="menu_search">
-				<i class="search link icon" type="submit"></i>
-			</form>
-		</div>
-	    <a class="item">Sign Up</a>
-		<div class="ui dropdown item">
-			Help
-			<i class="dropdown icon"></i>
-			<div class="menu">
-			<a class="item">MRI image</a>
-			<a class="item">Genome</a>
-			</div>
-		</div>
-	  </div>
-	</div>
+        <a class="active item">Information</a>
+        <a class="item" href="./gallery">Gallery</a>
+        <a class="item" href="./query">Analysis</a>
+        <div class="right menu">
+            <div class="item">
+                <form class="ui icon input" action="/data" method="POST">
+                    <input type="text" placeholder="Filename" name="menu_search">
+                    <i class="search link icon" type="submit"></i>
+                </form>
+            </div>
+            <a class="item">Sign Up</a>
+            <div class="ui dropdown item">
+                Help
+                <i class="dropdown icon"></i>
+                <div class="menu">
+                    <a class="item">MRI image</a>
+                    <a class="item">Genome</a>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class='ui grid'>
-        <div class='ten wide column'> 
+        <div class='ten wide column'>
             <table class="ui very compact table">
                 <thead>
-                    <tr><th>Tag</th>
-                    <th>Value</th>
-                </tr></thead>
+                    <tr>
+                        <th>Tag</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
                 <tbody>
                     {%for k, v in result_dict.items()%}
                     <tr>
-                    <td>{{k}}</td>
-                    <td>{{v}}</td>
+                        <td>{{k}}</td>
+                        <td>{{v}}</td>
                     </tr>
                     {% endfor%}
                 </tbody>
@@ -80,4 +84,5 @@
         </div>
     </div>
 </body>
+
 </html>
