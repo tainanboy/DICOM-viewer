@@ -23,6 +23,12 @@ app.config['MONGO_DBNAME'] = 'kidtest'
 #app.config['MONGO_PORT'] = 27017
 mongo2 = PyMongo(app, config_prefix='MONGO')
 
+def Pre(l,v) : 
+	i=l.index(v)
+	return l[i-1] if i>0 else None
+def Next(l,v):
+	i=l.index(v)
+	return l[i+1] if i<len(l)-1 else None
 
 @app.route('/index')
 def index():
@@ -32,9 +38,8 @@ def index():
 		for f in filenames:
 			filepath = os.path.join(dirpath, f)
 			if filepath.endswith('.dcm'):
-				l.append(filepath)	
-	for item in l:
-		filelist.append(os.path.basename(item).split(".")[0])
+				l.append(filepath)
+				filelist.append(os.path.basename(filepath).split(".")[0])
 	author = "Medical Viewer"
 	name = "User"
 	return render_template('index.html', **locals())
@@ -42,7 +47,14 @@ def index():
 @app.route('/data', methods=['GET', 'POST'])
 def data():
 	l = {}
+	file_list = []
 	result_dict = {}
+	for (dirpath, dirnames, filenames) in walk("/Users/frank/research/dicom/"):
+		for f in filenames:
+			filepath = os.path.join(dirpath, f)
+			if filepath.endswith('.dcm'):
+				l[f] = filepath
+				file_list.append(os.path.basename(filepath).split(".")[0])
 	if request.method == "POST":
 		if(request.form.get('filename')):
 			select = request.form.get('filename')
@@ -51,15 +63,15 @@ def data():
 	elif request.method == "GET":
 		if (request.args.get('more')):
 			select = request.args.get('more')
-	for (dirpath, dirnames, filenames) in walk("/Users/frank/research/dicom/"):
-		for f in filenames:
-			filepath = os.path.join(dirpath, f)
-			if filepath.endswith('.dcm'):
-				l[f] = filepath
+		elif (request.args.get('next')):
+			select = Next(file_list, request.args.get('next'))
+		elif (request.args.get('prev')):
+			select = Pre(file_list, request.args.get('prev'))
 	s = str(select) + '.dcm'
 	path = l.get(s)
 	ds = dicom.read_file(path)
 	imagename = str('image/'+ str(select) + '.png')
+	fname = str(select)
 	result_dict['filename'] = str(select)
 	result_dict['PatientName'] = str(ds.PatientName)
 	result_dict['Date'] = str(ds.StudyDate)

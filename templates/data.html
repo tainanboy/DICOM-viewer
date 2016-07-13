@@ -63,14 +63,16 @@
         </div>
         <div class="centered row">
             <div class="compact ui bottom attached buttons">
-                <button class="ui labeled icon button">
-                    <i class="left chevron icon"></i>
-                    Previous
-                </button>
-                <button class="compact ui right labeled icon button">
-                    <i class="right chevron icon"></i>
-                    Next
-                </button>
+                <form action="/data" method="GET">
+                    <button class="ui labeled icon button" value={{fname}} name="prev">
+                        <i class="left chevron icon"></i>
+                        Previous
+                    </button>
+                    <button class="compact ui right labeled icon button" value={{fname}} name="next">
+                        <i class="right chevron icon"></i>
+                        Next
+                    </button>
+                </form>
             </div>
             <!--
             <div class="ui search">
