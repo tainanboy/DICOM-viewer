@@ -16,6 +16,8 @@ import json
 from string import Template
 import itertools
 import collections
+from itertools import islice
+
 
 app = Flask(__name__)
 app.config['MONGO_DBNAME'] = 'kidtest'
@@ -40,6 +42,7 @@ def index():
 			if filepath.endswith('.dcm'):
 				l.append(filepath)
 				filelist.append(os.path.basename(filepath).split(".")[0])
+	filelist.sort()
 	author = "Medical Viewer"
 	name = "User"
 	return render_template('index.html', **locals())
@@ -55,6 +58,7 @@ def data():
 			if filepath.endswith('.dcm'):
 				l[f] = filepath
 				file_list.append(os.path.basename(filepath).split(".")[0])
+	file_list.sort()
 	if request.method == "POST":
 		if(request.form.get('filename')):
 			select = request.form.get('filename')
@@ -67,12 +71,12 @@ def data():
 			select = Next(file_list, request.args.get('next'))
 		elif (request.args.get('prev')):
 			select = Pre(file_list, request.args.get('prev'))
-	s = str(select) + '.dcm'
+	s = select + '.dcm'
 	path = l.get(s)
 	ds = dicom.read_file(path)
-	imagename = str('image/'+ str(select) + '.png')
+	imagename = str('image/'+ select + '.png')
 	fname = str(select)
-	result_dict['filename'] = str(select)
+	result_dict['filename'] = select
 	result_dict['PatientName'] = str(ds.PatientName)
 	result_dict['Date'] = str(ds.StudyDate)
 	result_dict['ImagePositionPatient'] = str(ds.ImagePositionPatient)
@@ -111,23 +115,30 @@ def xyz():
 @app.route('/gallery', methods=['GET', 'POST'])
 def gallery():
 	d = {}
-	b = 0
-	e = 30
+	od_list = []
+	b=0
+	e=30
 	for (dirpath, dirnames, filenames) in walk("/Users/frank/research/dicom/"):
+		#for f in islice(filenames, 31):
+		#for f in list(itertools.chain.from_iterable(filenames)):
 		for f in filenames:
 			if f.endswith('.dcm'):
 				filepath = os.path.join(dirpath, f)
 				ds = dicom.read_file(filepath)
 				if("ImagePositionPatient" in ds):
-					fn = str(os.path.basename(f).split(".")[0])
+					fn = os.path.basename(f).split(".")[0]
 					imagename = 'image/'+ fn + '.png'
 					d[fn] = (imagename, str(ds.ImagePositionPatient))
 				else:
-					fn = str(os.path.basename(f).split(".")[0])
+					fn = os.path.basename(f).split(".")[0]
 					imagename = 'image/'+ fn + '.png'
-					d[fn] = (imagename, '')					
-	od = collections.OrderedDict(sorted(d.items()))
-	od_list = list(od.items())[b:e]
+					d[fn] = (imagename, '')	
+	for key in sorted(d):
+		temp = (key, d[key])
+		od_list.append(temp)
+	od_list = od_list[b:e]
+	#od = collections.OrderedDict(sorted(d.items()))
+	#od_list = list(od.items())[b:e]
 	#s = item + '.dcm'
 	#imagename = str('image/'+ item + '.png')
 	#path = d.get(s)
